@@ -383,6 +383,8 @@ declare module '@deepseek-ai/dsh-tools' {
 // ─────────────────────────────────────────────────────────────────────────────
 
 declare module '@deepseek-ai/schemastery' {
+  import type { SettingsSchema } from '@deepseek-ai/dsh-settings'
+
   /**
    * The schema factory the harness uses for every settings section.
    *
@@ -391,8 +393,27 @@ declare module '@deepseek-ai/schemastery' {
    * the harness workspace, not with this package. The import in `src/index.ts`
    * is real and dynamic, so a deployment that lacks it degrades to static
    * configuration instead of failing to load.
+   *
+   * Field builders accept a schema value and return one — `Schema.object`
+   * rejects a plain `{type, default, description}` object, so every field here
+   * is built from a constructor before `.default()` and `.description()` are
+   * chained.
    */
+  export interface FieldBuilder<T> extends SettingsSchema<T> {
+    default(value: T): FieldBuilder<T>
+    description(text: string): FieldBuilder<T>
+    min(value: number): FieldBuilder<T>
+    max(value: number): FieldBuilder<T>
+    step(value: number): FieldBuilder<T>
+    required(): FieldBuilder<T>
+  }
+
   export interface SchemaFactory {
+    boolean(): FieldBuilder<boolean>
+    number(): FieldBuilder<number>
+    string(): FieldBuilder<string>
+    union<T>(list: readonly T[]): FieldBuilder<T>
+    const<T>(value: T): FieldBuilder<T>
     object<T>(description: Record<string, unknown>): T
   }
 

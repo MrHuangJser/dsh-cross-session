@@ -26,68 +26,46 @@ export type Config = Readonly<Record<string, unknown>>
 
 /** Build the settings section schema, including the GUI-facing descriptions. */
 function buildSectionSchema(Schema: SchemaFactory): SettingsSchema<CrossSessionSettings> {
+  // `Schema.object` field values are schema values, not plain descriptors — a
+  // `{type, default, description}` object is what schemastery rejects with
+  // "cannot infer schema". Defaults match DEFAULT_SETTINGS exactly.
   return Schema.object<SettingsSchema<CrossSessionSettings>>({
-    enabled: {
-      type: 'boolean',
-      default: DEFAULT_SETTINGS.enabled,
-      description: 'Register the cross-session tools at all.',
-    },
-    defaultSendMode: {
-      type: 'string',
-      default: DEFAULT_SETTINGS.defaultSendMode,
-      description: 'Delivery mode used when sessions_send omits mode: queue or steer.',
-    },
-    allowResume: {
-      type: 'boolean',
-      default: DEFAULT_SETTINGS.allowResume,
-      description:
+    enabled: Schema.boolean()
+      .default(DEFAULT_SETTINGS.enabled)
+      .description('Register the cross-session tools at all.'),
+    defaultSendMode: Schema.union(['queue', 'steer'])
+      .default(DEFAULT_SETTINGS.defaultSendMode)
+      .description('Delivery mode used when sessions_send omits mode: queue or steer.'),
+    allowResume: Schema.boolean()
+      .default(DEFAULT_SETTINGS.allowResume)
+      .description(
         'Allow a send to wake a cold session. Off means sessions_read stays read-only and nothing is ever resumed.',
-    },
-    frameMessages: {
-      type: 'boolean',
-      default: DEFAULT_SETTINGS.frameMessages,
-      description:
+      ),
+    frameMessages: Schema.boolean()
+      .default(DEFAULT_SETTINGS.frameMessages)
+      .description(
         'Prefix delivered messages with a frame naming the sending session, so the receiver can tell a peer from the human.',
-    },
-    includeInjectedByDefault: {
-      type: 'boolean',
-      default: DEFAULT_SETTINGS.includeInjectedByDefault,
-      description:
+      ),
+    includeInjectedByDefault: Schema.boolean()
+      .default(DEFAULT_SETTINGS.includeInjectedByDefault)
+      .description(
         'Include harness-injected context (system reminders, memory snapshots) when reading another session.',
-    },
-    maxListResults: {
-      type: 'number',
-      default: DEFAULT_SETTINGS.maxListResults,
-      description: 'Upper bound on rows sessions_list returns.',
-    },
-    maxReadMessages: {
-      type: 'number',
-      default: DEFAULT_SETTINGS.maxReadMessages,
-      description: 'Upper bound on messages sessions_read returns.',
-    },
-    maxMessageChars: {
-      type: 'number',
-      default: DEFAULT_SETTINGS.maxMessageChars,
-      description: 'Per-message character budget before sessions_read truncates.',
-    },
-    maxSendChars: {
-      type: 'number',
-      default: DEFAULT_SETTINGS.maxSendChars,
-      description: 'Upper bound on the body length sessions_send delivers.',
-    },
+      ),
+    maxListResults: Schema.number()
+      .default(DEFAULT_SETTINGS.maxListResults)
+      .description('Upper bound on rows sessions_list returns.'),
+    maxReadMessages: Schema.number()
+      .default(DEFAULT_SETTINGS.maxReadMessages)
+      .description('Upper bound on messages sessions_read returns.'),
+    maxMessageChars: Schema.number()
+      .default(DEFAULT_SETTINGS.maxMessageChars)
+      .description('Per-message character budget before sessions_read truncates.'),
+    maxSendChars: Schema.number()
+      .default(DEFAULT_SETTINGS.maxSendChars)
+      .description('Upper bound on the body length sessions_send delivers.'),
   })
 }
 
-/**
- * Cordis plugin entry point for the Host half.
- *
- * @param ctx - the plugin context, which owns every registration this makes.
- * @param config - the composition row's own configuration, used as the base layer.
- * @returns a disposer that unregisters the tools, or `undefined` when the
- *   registration is already owned by `ctx.effect`. Synchronous by design: the
- *   loader does not await a Promise from `apply`, so every registration must
- *   happen in one call frame.
- */
 export function apply(ctx: Context, config: Config = {}): Disposer | undefined {
   const services = resolveHostServices(ctx)
 
