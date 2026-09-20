@@ -2,39 +2,27 @@ import { ReactNode } from "react";
 
 //#region src/client/index.d.ts
 /**
-* The settings scope this card edits.
-*
-* Provided by `@deepseek-ai/dsh-client-ui-settings`. The shape is declared
-* structurally for the same reason the Host types are: the client UI packages
-* are runtime-owned, and this card uses a handful of methods on one of them.
+* The bound settings scope (`ctx.settingsScope.bind({ namespace })` returns
+* exactly this shape: `set` commits a write, `subscribe` reports changes).
 */
 /**
- * The settings scope this card edits.
- *
- * Provided by `@deepseek-ai/dsh-client-ui-settings`. The shape is declared
- * structurally for the same reason the Host types are: the client UI packages
- * are runtime-owned, and this card uses a handful of methods on one of them.
+ * The bound settings scope (`ctx.settingsScope.bind({ namespace })` returns
+ * exactly this shape: `set` commits a write, `subscribe` reports changes).
  */
-interface SettingsScope {
-  /** The resolved section value: composition base merged with user overrides. */
-  get(): Record<string, unknown>;
-  /** Write one field into the namespace's user layer. */
-  set(key: string, value: unknown): void;
-  /** Remove one field's user override, restoring the composed base. */
-  reset(key: string): void;
+interface BoundScope {
+  set(key: string, value: unknown): unknown;
+  subscribe(listener: () => void): () => void;
+  get?(): unknown;
 }
 interface SettingsScopeBinder {
   bind(spec: {
     namespace: string;
-  }): SettingsScope;
+  }): BoundScope;
 }
-/** One contribution to a keyed slot. */
-interface SlotContribution {
-  readonly name: string;
-  readonly key: string;
-  readonly inject: () => {
-    readonly scope: SettingsScope | undefined;
-  };
+/** The store shape the slot machinery turns into a `use*` hook. */
+interface ScopeStore {
+  subscribe(listener: () => void): () => void;
+  getSnapshot(): Record<string, unknown>;
 }
 interface ClientLogger {
   warn(...values: unknown[]): void;
@@ -42,16 +30,24 @@ interface ClientLogger {
 }
 interface ClientContext {
   readonly logger: ClientLogger;
+  readonly locale: {
+    register(ns: string, dicts: Record<string, Record<string, string>>): () => void;
+    bind(ns: string): (key: string) => string;
+  };
+  readonly settingsScope: SettingsScopeBinder;
+  readonly slots: {
+    inject(name: string, callback: () => unknown): () => void;
+    register(spec: unknown, component: unknown): unknown;
+  };
+  effect(callback: () => () => void, label?: string): () => void;
   get(name: string): unknown;
 }
-/**
- * The card component.
- *
- * The section supplies no owner props for `settings.plugin.item`, so the scope
- * the card edits is captured through `inject` rather than read inside render.
- */
+/** The card component registered into `settings.plugin.item`. */
 declare function CrossSessionCard(props: {
-  readonly scope?: SettingsScope;
+  readonly t?: (key: string) => string;
+  readonly useCrossSession?: (selector: (snapshot: Record<string, unknown>) => Record<string, unknown>) => Record<string, unknown> | undefined;
+  readonly scope?: BoundScope;
+  readonly tFallback?: (key: string) => string;
 }): ReactNode;
 /**
  * Cordis plugin entry point for the browser half.
@@ -62,11 +58,10 @@ declare function apply(ctx: ClientContext): void;
 /** Cordis plugin metadata consumed by the client module system. */
 declare const name: "dsh-cross-session";
 /**
- * Required services (cordis fiber inject).
- *
- * Both are provided by `@deepseek-ai/dsh-client-ui-settings` and the slot core.
- * Service names, not package names: the package-level `dsh.client.inject` in
- * `package.json` is what orders those providers before this bundle.
+ * Required services (cordis fiber inject): the slot registry, the locale
+ * service for card strings, and the settings scope that backs every control.
+ * Service names, not package names — `dsh.client.inject` in `package.json` is
+ * what orders their providers before this bundle.
  */
-declare const inject: readonly ["settingsScope", "slots"]; //#endregion
-export { ClientContext, ClientLogger, CrossSessionCard, SettingsScope, SettingsScopeBinder, SlotContribution, apply, inject, name };
+declare const inject: readonly ["slots", "locale", "settingsScope"]; //#endregion
+export { BoundScope, ClientContext, ClientLogger, CrossSessionCard, ScopeStore, SettingsScopeBinder, apply, inject, name };
