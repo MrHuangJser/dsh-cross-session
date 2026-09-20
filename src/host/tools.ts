@@ -264,8 +264,20 @@ function defineSendTool(context: ToolContext): ToolDefinition {
         stringArg(args, 'mode', settings.defaultSendMode),
       )
 
+      // The sender's folded title goes into the frame when one exists, so the
+      // receiver sees a name, not just an id. A missing title is not an error.
+      let senderTitle: string | undefined
+      try {
+        senderTitle = (await context.query.readTitle(callerId as never))?.title
+      } catch {
+        senderTitle = undefined
+      }
+
       const request: SendRequest = {
-        sender: { sessionId: callerId },
+        sender:
+          senderTitle === undefined
+            ? { sessionId: callerId }
+            : { sessionId: callerId, title: senderTitle },
         targetSessionId,
         body: stringArg(args, 'message'),
         mode,
