@@ -1,0 +1,76 @@
+{
+  "name": "dsh-cross-session",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cross-session tools for the DeepSeek Harness: list, read, and message other sessions from inside one conversation.",
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "cordis",
+    "agent",
+    "cross-session",
+    "multi-agent"
+  ],
+  "license": "MIT",
+  "author": "MrHuangJser",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrHuangJser/dsh-cross-session.git"
+  },
+  "homepage": "https://github.com/MrHuangJser/dsh-cross-session#readme",
+  "bugs": {
+    "url": "https://github.com/MrHuangJser/dsh-cross-session/issues"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "types": "./lib/client.d.ts",
+      "default": "./lib/client.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "docs",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "external": []
+    }
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "node --test \"test/**/*.test.ts\"",
+    "check": "pnpm run format:check && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.18.0",
+    "@types/node": "^22.10.5",
+    "eslint": "^9.18.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.4.2",
+    "tsdown": "^0.9.0",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.20.0"
+  }
+}

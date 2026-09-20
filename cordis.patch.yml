@@ -1,0 +1,30 @@
+# Bundle patch for dsh-cross-session.
+#
+# This is the `dsh.bundle.patch` layer. When the package is installed through
+# the official CLI —
+#
+#   dsh plugin --profile web add /path/to/dsh-cross-session
+#
+# — the command reconciles `dsh.profile.bundles` against installed packages and,
+# seeing this declaration, appends `dsh-cross-session` to the bundle stack. The
+# profile boot then merges this patch (a single `insert` of the plugin row),
+# exactly like a manual `cordis.patch.yml` mount line.
+#
+# The row's `config` is the base layer of this plugin's settings. The settings
+# document overrides it field by field, and the GUI card under
+# Settings → Plugins → Plugin configuration edits that document, so a value set
+# here is a default rather than a lock.
+#
+# Every accepted field is documented in docs/configuration.md. The two that are
+# worth setting here are shown commented out:
+#
+#   - insert:
+#       - id: cross-session
+#         name: 'dsh-cross-session'
+#         config:
+#           allowResume: false          # reads stay read-only; never wake a session
+#           defaultSendMode: steer      # insert into a running turn instead of queueing
+#
+- insert:
+    - id: cross-session
+      name: 'dsh-cross-session'

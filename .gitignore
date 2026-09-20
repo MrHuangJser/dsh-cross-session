@@ -1,0 +1,27 @@
+# Build output
+#
+# NOTE: `lib/` is deliberately NOT ignored here. This package is consumed by
+# path (`dsh plugin --profile web add /path/to/dsh-cross-session`), and the
+# harness serves the BUILT browser bundle: a clone without `lib/client.js` fails
+# client activation loudly. Committing the build output keeps the repository
+# directly mountable. Rebuild with `pnpm run build` after changing `src/`.
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Editor and OS noise
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Tool caches
+.eslintcache
+*.tsbuildinfo
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*

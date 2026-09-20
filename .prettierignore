@@ -1,0 +1,15 @@
+# Build output
+lib/
+dist/
+coverage/
+
+# Dependencies
+node_modules/
+
+# Lockfiles are generated, not authored
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Docs that embed generated snippets keep their own formatting
+CHANGELOG.md
