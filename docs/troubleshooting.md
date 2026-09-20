@@ -76,9 +76,15 @@ and the cards registered in the browser.
    static configuration: `@deepseek-ai/schemastery` ships with the harness, so a
    missing copy means the profile's `node_modules` is incomplete.
 
-2. **Is the browser bundle built?** The harness serves **built** client bundles. If
-   `lib/client.js` does not exist (a fresh clone with no `pnpm run build`), client
-   activation fails loudly with a build instruction. Run `pnpm run build`.
+2. **Is the browser bundle built, and in the right shape?** The harness serves
+   **built** client bundles, and each one must self-register through
+   `window.__ModuleLoader__.load` because the shell serves them inside a
+   classic-script `/plugins` combo. A bundle that instead starts with an ESM
+   `import` is a syntax error there and fails the whole plugin tree at boot —
+   the error names whichever entry _preceded_ it in the combo (e.g.
+   `dsh-client-hmr`), not this package. Check `lib/client.js` starts with
+   `window.__ModuleLoader__.load({` and passes `node --check`; rebuild with
+   `pnpm run build` if not.
 
 3. **Did the bundle load in the browser?** Open the browser console. A client
    plugin that threw during `apply` logs its own warning and registers no card.
