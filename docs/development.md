@@ -97,10 +97,10 @@ change to the real service surface shows up as a compile error in one place.
 
 Both unresolved-import warnings during the build are **expected**:
 
-- `@deepseek-ai/schemastery` resolves from the harness workspace at runtime, not
-  from this package's `node_modules`.
+- `@deepseek-ai/schemastery` resolves from the harness workspace at runtime
+  through `createRequire`, so `src/index.ts` treats it as external.
 - `react` is seeded by the shell's frozen module table, which the browser bundle
-  resolves against.
+  resolves against through `require("react")` — not through `node_modules`.
 
 If a future card needs a module **outside** that baseline, it must be declared in
 `package.json`:
