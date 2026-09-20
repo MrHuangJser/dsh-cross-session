@@ -11,7 +11,7 @@
 export const SETTINGS_NAMESPACE = 'cross-session' as const
 
 /** Host plugin name, used by the Cordis loader and by log lines. */
-export const PLUGIN_NAME = 'dsh-cross-session' as const
+export const PLUGIN_NAME = '@mrhuangjser/dsh-cross-session' as const
 
 /** Model-facing tool names. Stable: sessions and prompts may cite them. */
 export const TOOL_LIST = 'sessions_list' as const

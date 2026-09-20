@@ -76,7 +76,7 @@ interface CrossSessionSettings {
  * broken install.
  */
 /**
- * The Host half of dsh-cross-session.
+ * The Host half of @mrhuangjser/dsh-cross-session.
  *
  * Lifecycle, in order:
  *  1. resolve the Host services this plugin consumes, failing loudly at mount
@@ -90,7 +90,7 @@ interface CrossSessionSettings {
 type Config = Readonly<Record<string, unknown>>;
 declare function apply(ctx: Context, config?: Config): Disposer | undefined;
 /** Cordis plugin metadata consumed by the loader. */
-declare const name: "dsh-cross-session";
+declare const name: "@mrhuangjser/dsh-cross-session";
 /** Hard dependencies: without these the tools cannot do their job at all. */
 declare const inject: readonly ["sessionQuery", "sessionController", "agents", "tools"];
 

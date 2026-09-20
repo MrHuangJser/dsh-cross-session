@@ -1,4 +1,4 @@
-# dsh-cross-session
+# @mrhuangjser/dsh-cross-session
 
 **Let one DeepSeek Harness session list, read, and message another session.**
 
@@ -60,7 +60,7 @@ other conversations programmatically"_), exposed as the subagent/collab tools �
 The mechanisms agree on the parts that matter, and this package deliberately
 mirrors them:
 
-| Behaviour          | Codex                                                                               | dsh-cross-session                                               |
+| Behaviour          | Codex                                                                               | @mrhuangjser/dsh-cross-session                                  |
 | ------------------ | ----------------------------------------------------------------------------------- | --------------------------------------------------------------- |
 | Peer identity      | `ThreadId`, later path-style `/root/task1/task_3`                                   | durable session id (`session-…` / UUID)                         |
 | Discovery          | `list_agents`, live agents only, name + status                                      | `sessions_list`, full corpus, id + title + workspace + liveness |
@@ -86,13 +86,20 @@ The package is a Host-plane plugin: it must load in the harness process, next to
 `sessionQuery` and `sessionController`, so that every session gets the tools.
 
 ```sh
-# from the repository root
-pnpm install
-pnpm run check          # format + lint + typecheck + test + build
+# the published package, by name — for anyone, anywhere
+dsh plugin --profile web add @mrhuangjser/dsh-cross-session
 
-# install into a profile (the CLI reconciles dsh.profile.bundles for you)
+# a GitHub tarball works too, no npm needed
+dsh plugin --profile web add github:MrHuangJser/dsh-cross-session
+
+# a local clone, for development
+pnpm install && pnpm run check
 dsh plugin --profile web add /absolute/path/to/dsh-cross-session
 ```
+
+The CLI installs the package through `pnpm add`, then reconciles
+`dsh.profile.bundles` for you — the `dsh.bundle.patch` declaration ships in the
+package, so no manual `cordis.patch.yml` line is needed.
 
 Restart the profile, then confirm the tools are visible:
 
@@ -101,7 +108,7 @@ dsh plugin --profile web list
 ```
 
 Open **Settings → Plugins → Plugin configuration** and you should see a
-**dsh-cross-session** card. If the card is missing but the tools work, the
+**@mrhuangjser/dsh-cross-session** card. If the card is missing but the tools work, the
 browser half did not load — see [Troubleshooting](docs/troubleshooting.md).
 
 ### Manual mount instead of the CLI
@@ -113,7 +120,7 @@ to the profile's dependencies and insert the row yourself in the profile's
 ```yaml
 - insert:
     - id: cross-session
-      name: 'dsh-cross-session'
+      name: '@mrhuangjser/dsh-cross-session'
 ```
 
 ---

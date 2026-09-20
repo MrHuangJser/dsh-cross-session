@@ -1,5 +1,5 @@
 {
-  "name": "dsh-cross-session",
+  "name": "@mrhuangjser/dsh-cross-session",
   "version": "0.1.0",
   "private": true,
   "description": "Cross-session tools for the DeepSeek Harness: list, read, and message other sessions from inside one conversation.",
@@ -65,7 +65,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "node --test \"test/**/*.test.ts\"",
-    "check": "pnpm run format:check && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build"
+    "check": "pnpm run format:check && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build",
+    "prepublishOnly": "pnpm run check"
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",
@@ -77,5 +78,8 @@
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0",
     "@deepseek-ai/schemastery": "^3.18.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
