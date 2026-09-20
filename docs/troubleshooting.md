@@ -15,7 +15,7 @@ right.
 
 ## The plugin row will not load
 
-### `@mrhuangjser/dsh-cross-session requires the "<name>" Host service (<purpose>)`
+### `@huangjiangheng/dsh-cross-session requires the "<name>" Host service (<purpose>)`
 
 `MissingServiceError`, thrown at mount. The harness composes 70+ services and a
 minimal profile may omit one of the four this package needs:
@@ -45,7 +45,7 @@ With `enabled: false` the plugin mounts, logs `disabled by configuration; regist
 no tools`, and registers nothing. Flip the switch on the GUI card, or remove the
 override.
 
-### `Cannot find package '@mrhuangjser/dsh-cross-session'`
+### `Cannot find package '@huangjiangheng/dsh-cross-session'`
 
 The profile cannot resolve the package. Either it was never installed
 (`dsh plugin --profile web add /absolute/path/to/dsh-cross-session`) or the profile's

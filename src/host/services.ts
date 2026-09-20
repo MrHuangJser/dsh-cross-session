@@ -55,7 +55,7 @@ export class MissingServiceError extends Error {
 
   public constructor(service: string, purpose: string) {
     super(
-      `@mrhuangjser/dsh-cross-session requires the "${service}" Host service (${purpose}), but this ` +
+      `@huangjiangheng/dsh-cross-session requires the "${service}" Host service (${purpose}), but this ` +
         `deployment does not compose it. Add the plugin that provides "${service}" to the ` +
         `host composition, or disable this plugin.`,
     )

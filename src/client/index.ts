@@ -4,7 +4,7 @@ import { PLUGIN_NAME, SETTINGS_NAMESPACE } from '../shared/meta.ts'
 import { type CrossSessionSettings, DEFAULT_SETTINGS } from '../shared/settings.ts'
 
 /**
- * The browser half of @mrhuangjser/dsh-cross-session: one expandable card in **Settings →
+ * The browser half of @huangjiangheng/dsh-cross-session: one expandable card in **Settings →
  * Plugins → Plugin configuration**.
  *
  * The card is dispatched by the section that owns `settings.plugin.item`, keyed

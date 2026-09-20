@@ -1,6 +1,6 @@
 # Architecture
 
-This document explains where `@mrhuangjser/dsh-cross-session` sits in the harness, what happens
+This document explains where `@huangjiangheng/dsh-cross-session` sits in the harness, what happens
 between "the model calls `sessions_send`" and "another session starts thinking",
 and why each structural decision was made the way it was.
 
@@ -18,7 +18,7 @@ and approval stack, the model route. One instance per process.
 **Agent preset.** What one session contributes to those registries: its tools, its
 persona, its prompt sections. One instance per session, unwound with it.
 
-`@mrhuangjser/dsh-cross-session` is Host-plane, for three independent reasons:
+`@huangjiangheng/dsh-cross-session` is Host-plane, for three independent reasons:
 
 1. **It reads the whole corpus.** `ctx.sessionQuery` is a process singleton that
    resolves live sessions and durable storage together. A per-session copy would

@@ -68,7 +68,7 @@ decides the behaviour when the model does not choose.
 
 ## GUI card
 
-**Settings → Plugins → Plugin configuration → @mrhuangjser/dsh-cross-session.**
+**Settings → Plugins → Plugin configuration → @huangjiangheng/dsh-cross-session.**
 
 The card renders one row per setting, with the description text taken from the
 schema declared in `src/index.ts`. Controls are a checkbox for booleans, a
@@ -117,7 +117,7 @@ from another surface is refused rather than silently overwritten.
 ```yaml
 - insert:
     - id: cross-session
-      name: '@mrhuangjser/dsh-cross-session'
+      name: '@huangjiangheng/dsh-cross-session'
 ```
 
 To set base values, add a `config` block:
@@ -125,7 +125,7 @@ To set base values, add a `config` block:
 ```yaml
 - insert:
     - id: cross-session
-      name: '@mrhuangjser/dsh-cross-session'
+      name: '@huangjiangheng/dsh-cross-session'
       config:
         allowResume: false
         defaultSendMode: steer
@@ -165,5 +165,5 @@ Three ways, in decreasing scope:
    capability one switch away.
 2. **Remove the row** from the profile's `cordis.patch.yml` and restore the bundle
    stack. Cleanest if you want the tools gone from the catalog entirely.
-3. **`dsh plugin --profile web remove @mrhuangjser/dsh-cross-session`** — uninstalls the package,
+3. **`dsh plugin --profile web remove @huangjiangheng/dsh-cross-session`** — uninstalls the package,
    which removes the row via the same bundle reconciliation that added it.

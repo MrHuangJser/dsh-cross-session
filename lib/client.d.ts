@@ -56,7 +56,7 @@ declare function CrossSessionCard(props: {
  */
 declare function apply(ctx: ClientContext): void;
 /** Cordis plugin metadata consumed by the client module system. */
-declare const name: "@mrhuangjser/dsh-cross-session";
+declare const name: "@huangjiangheng/dsh-cross-session";
 /**
  * Required services (cordis fiber inject): the slot registry, the locale
  * service for card strings, and the settings scope that backs every control.

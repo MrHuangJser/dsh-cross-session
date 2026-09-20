@@ -10,7 +10,7 @@ import { resolveHostServices } from './host/services.ts'
 import { type ToolContext, registerTools } from './host/tools.ts'
 
 /**
- * The Host half of @mrhuangjser/dsh-cross-session.
+ * The Host half of @huangjiangheng/dsh-cross-session.
  *
  * Lifecycle, in order:
  *  1. resolve the Host services this plugin consumes, failing loudly at mount

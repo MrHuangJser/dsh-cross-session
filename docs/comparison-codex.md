@@ -1,7 +1,7 @@
 # Comparison: Codex's cross-session capability
 
 This document records what the analogous feature in OpenAI's Codex CLI actually is,
-mechanism by mechanism, and where `@mrhuangjser/dsh-cross-session` deliberately matches it and
+mechanism by mechanism, and where `@huangjiangheng/dsh-cross-session` deliberately matches it and
 where it differs. It exists because "implement the same thing as Codex" is not a
 specification until the thing is pinned down.
 
@@ -43,7 +43,7 @@ Two generations of tools exist:
   lowercase letters, digits, underscores). A relative reference resolves against the
   current path.
 
-`@mrhuangjser/dsh-cross-session` uses the harness's own durable session id, which is what
+`@huangjiangheng/dsh-cross-session` uses the harness's own durable session id, which is what
 `sessions_list` returns. It is not path-shaped because the harness has no agent
 tree to encode: a session id addresses a session anywhere in the corpus.
 
@@ -93,7 +93,7 @@ Unified through `LocalAgentControl::deliver_message()` with two delivery modes:
 
 This maps closely onto the harness:
 
-| Codex                                     | @mrhuangjser/dsh-cross-session                                |
+| Codex                                     | @huangjiangheng/dsh-cross-session                             |
 | ----------------------------------------- | ------------------------------------------------------------- |
 | `send_message` (QueueOnly)                | `sessions_send` with `mode: "queue"`                          |
 | `followup_task` (TriggerTurn)             | `sessions_send` with `mode: "steer"` on a live target         |
@@ -169,14 +169,14 @@ they are not what this package reimplements:
 The harness has a direct analogue of the second group: the browser's session list,
 plus `sessionReferenceResolver`, which lets a _user_ pull another session's snapshot
 into the current turn with an `@` mention. That is user-initiated context injection;
-`@mrhuangjser/dsh-cross-session` is model-initiated peer communication. They are complements, not
+`@huangjiangheng/dsh-cross-session` is model-initiated peer communication. They are complements, not
 overlaps.
 
 ---
 
 ## Summary
 
-| Capability                        | Codex                                          | @mrhuangjser/dsh-cross-session                                                  |
+| Capability                        | Codex                                          | @huangjiangheng/dsh-cross-session                                               |
 | --------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------- |
 | Create a peer conversation        | `spawn_agent`                                  | not offered — the harness already has `subagent`                                |
 | Discover peers                    | `list_agents`, live only, name + status        | `sessions_list`, full corpus, richer rows                                       |

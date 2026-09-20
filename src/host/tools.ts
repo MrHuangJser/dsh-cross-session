@@ -312,7 +312,7 @@ export function registerTools(
     return () => {
       for (const dispose of disposers.reverse()) dispose()
     }
-  }, '@mrhuangjser/dsh-cross-session: tools')
+  }, '@huangjiangheng/dsh-cross-session: tools')
 }
 
 export { TOOL_LIST, TOOL_READ, TOOL_SEND }

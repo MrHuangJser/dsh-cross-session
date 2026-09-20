@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { build } from 'tsdown'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
-const PACKAGE_NAME = '@mrhuangjser/dsh-cross-session'
+const PACKAGE_NAME = '@huangjiangheng/dsh-cross-session'
 
 // ── Host bundle ─────────────────────────────────────────────────────────────
 // The Host half is loaded by the harness loader as a plain Node ESM module.

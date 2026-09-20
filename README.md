@@ -1,4 +1,4 @@
-# @mrhuangjser/dsh-cross-session
+# @huangjiangheng/dsh-cross-session
 
 **Let one DeepSeek Harness session list, read, and message another session.**
 
@@ -60,7 +60,7 @@ other conversations programmatically"_), exposed as the subagent/collab tools �
 The mechanisms agree on the parts that matter, and this package deliberately
 mirrors them:
 
-| Behaviour          | Codex                                                                               | @mrhuangjser/dsh-cross-session                                  |
+| Behaviour          | Codex                                                                               | @huangjiangheng/dsh-cross-session                               |
 | ------------------ | ----------------------------------------------------------------------------------- | --------------------------------------------------------------- |
 | Peer identity      | `ThreadId`, later path-style `/root/task1/task_3`                                   | durable session id (`session-…` / UUID)                         |
 | Discovery          | `list_agents`, live agents only, name + status                                      | `sessions_list`, full corpus, id + title + workspace + liveness |
@@ -87,7 +87,7 @@ The package is a Host-plane plugin: it must load in the harness process, next to
 
 ```sh
 # the published package, by name — for anyone, anywhere
-dsh plugin --profile web add @mrhuangjser/dsh-cross-session
+dsh plugin --profile web add @huangjiangheng/dsh-cross-session
 
 # a GitHub tarball works too, no npm needed
 dsh plugin --profile web add github:MrHuangJser/dsh-cross-session
@@ -108,7 +108,7 @@ dsh plugin --profile web list
 ```
 
 Open **Settings → Plugins → Plugin configuration** and you should see a
-**@mrhuangjser/dsh-cross-session** card. If the card is missing but the tools work, the
+**@huangjiangheng/dsh-cross-session** card. If the card is missing but the tools work, the
 browser half did not load — see [Troubleshooting](docs/troubleshooting.md).
 
 ### Manual mount instead of the CLI
@@ -120,7 +120,7 @@ to the profile's dependencies and insert the row yourself in the profile's
 ```yaml
 - insert:
     - id: cross-session
-      name: '@mrhuangjser/dsh-cross-session'
+      name: '@huangjiangheng/dsh-cross-session'
 ```
 
 ---

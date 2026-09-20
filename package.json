@@ -1,5 +1,5 @@
 {
-  "name": "@mrhuangjser/dsh-cross-session",
+  "name": "@huangjiangheng/dsh-cross-session",
   "version": "0.1.0",
   "private": false,
   "description": "Cross-session tools for the DeepSeek Harness: list, read, and message other sessions from inside one conversation.",

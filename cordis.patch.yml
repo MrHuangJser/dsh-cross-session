@@ -1,4 +1,4 @@
-# Bundle patch for @mrhuangjser/dsh-cross-session.
+# Bundle patch for @huangjiangheng/dsh-cross-session.
 #
 # This is the `dsh.bundle.patch` layer. When the package is installed through
 # the official CLI —
@@ -6,7 +6,7 @@
 #   dsh plugin --profile web add /path/to/dsh-cross-session
 #
 # — the command reconciles `dsh.profile.bundles` against installed packages and,
-# seeing this declaration, appends `@mrhuangjser/dsh-cross-session` to the bundle stack. The
+# seeing this declaration, appends `@huangjiangheng/dsh-cross-session` to the bundle stack. The
 # profile boot then merges this patch (a single `insert` of the plugin row),
 # exactly like a manual `cordis.patch.yml` mount line.
 #
@@ -20,11 +20,11 @@
 #
 #   - insert:
 #       - id: cross-session
-#         name: '@mrhuangjser/dsh-cross-session'
+#         name: '@huangjiangheng/dsh-cross-session'
 #         config:
 #           allowResume: false          # reads stay read-only; never wake a session
 #           defaultSendMode: steer      # insert into a running turn instead of queueing
 #
 - insert:
     - id: cross-session
-      name: '@mrhuangjser/dsh-cross-session'
+      name: '@huangjiangheng/dsh-cross-session'
