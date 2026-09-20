@@ -6,44 +6,53 @@ import { ReactNode } from "react";
 *
 * Provided by `@deepseek-ai/dsh-client-ui-settings`. The shape is declared
 * structurally for the same reason the Host types are: the client UI packages
-* are runtime-owned, and this card uses one method of one of them.
+* are runtime-owned, and this card uses a handful of methods on one of them.
 */
 /**
  * The settings scope this card edits.
  *
  * Provided by `@deepseek-ai/dsh-client-ui-settings`. The shape is declared
  * structurally for the same reason the Host types are: the client UI packages
- * are runtime-owned, and this card uses one method of one of them.
+ * are runtime-owned, and this card uses a handful of methods on one of them.
  */
-interface SettingsScope<T> {
-  get(): T;
+interface SettingsScope {
+  /** The resolved section value: composition base merged with user overrides. */
+  get(): Record<string, unknown>;
+  /** Write one field into the namespace's user layer. */
   set(key: string, value: unknown): void;
+  /** Remove one field's user override, restoring the composed base. */
   reset(key: string): void;
-  readonly revision: number;
 }
-/**
- * One contribution to a keyed slot.
- *
- * The shape mirrors what the settings section reads: the `key` decides which
- * served namespace this cell answers for, and `inject` supplies the props the
- * card component receives.
- */
+interface SettingsScopeBinder {
+  bind(spec: {
+    namespace: string;
+  }): SettingsScope;
+}
+/** One contribution to a keyed slot. */
 interface SlotContribution {
   readonly name: string;
   readonly key: string;
   readonly inject: () => {
-    readonly scope: SettingsScope<Record<string, unknown>> | undefined;
+    readonly scope: SettingsScope | undefined;
   };
+}
+interface ClientLogger {
+  warn(...values: unknown[]): void;
+  info(...values: unknown[]): void;
 }
 interface ClientContext {
-  readonly logger: {
-    warn(...values: unknown[]): void;
-    info(...values: unknown[]): void;
-  };
+  readonly logger: ClientLogger;
   get(name: string): unknown;
 }
-/** The card component the shell renders inside `settings.plugin.item`. */
-declare function CrossSessionCard(): ReactNode;
+/**
+ * The card component.
+ *
+ * The section supplies no owner props for `settings.plugin.item`, so the scope
+ * the card edits is captured through `inject` rather than read inside render.
+ */
+declare function CrossSessionCard(props: {
+  readonly scope?: SettingsScope;
+}): ReactNode;
 /**
  * Cordis plugin entry point for the browser half.
  *
@@ -52,6 +61,12 @@ declare function CrossSessionCard(): ReactNode;
 declare function apply(ctx: ClientContext): void;
 /** Cordis plugin metadata consumed by the client module system. */
 declare const name: "dsh-cross-session";
-/** Client services this bundle resolves before running. */
-declare const inject: readonly ["slots"]; //#endregion
-export { ClientContext, CrossSessionCard, SettingsScope, SlotContribution, apply, inject, name };
+/**
+ * Required services (cordis fiber inject).
+ *
+ * Both are provided by `@deepseek-ai/dsh-client-ui-settings` and the slot core.
+ * Service names, not package names: the package-level `dsh.client.inject` in
+ * `package.json` is what orders those providers before this bundle.
+ */
+declare const inject: readonly ["settingsScope", "slots"]; //#endregion
+export { ClientContext, ClientLogger, CrossSessionCard, SettingsScope, SettingsScopeBinder, SlotContribution, apply, inject, name };

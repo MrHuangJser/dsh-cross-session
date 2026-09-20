@@ -1,3 +1,5 @@
+import { createRequire } from 'node:module'
+
 import type { Context, Disposer } from '@deepseek-ai/cordis'
 import type { SchemaFactory } from '@deepseek-ai/schemastery'
 import type { SettingsProvider, SettingsSchema } from '@deepseek-ai/dsh-settings'
@@ -81,10 +83,12 @@ function buildSectionSchema(Schema: SchemaFactory): SettingsSchema<CrossSessionS
  *
  * @param ctx - the plugin context, which owns every registration this makes.
  * @param config - the composition row's own configuration, used as the base layer.
- * @returns a disposer that unregisters everything, or nothing when registration
- *   is owned by `ctx.effect`.
+ * @returns a disposer that unregisters the tools, or `undefined` when the
+ *   registration is already owned by `ctx.effect`. Synchronous by design: the
+ *   loader does not await a Promise from `apply`, so every registration must
+ *   happen in one call frame.
  */
-export async function apply(ctx: Context, config: Config = {}): Promise<Disposer | undefined> {
+export function apply(ctx: Context, config: Config = {}): Disposer | undefined {
   const services = resolveHostServices(ctx)
 
   // The active configuration. It starts as the composition row's own values and
@@ -114,10 +118,19 @@ export async function apply(ctx: Context, config: Config = {}): Promise<Disposer
     return disposeTools
   }
 
+  // schemastery is runtime-owned (it ships with the harness), so it is resolved
+  // through `createRequire` anchored at this bundle rather than declared as a
+  // dependency: a deployment that lacks it still gets working tools on static
+  // configuration instead of a mount failure.
   let Schema: SchemaFactory
   try {
-    const module = await import('@deepseek-ai/schemastery')
-    Schema = module.default
+    const require = createRequire(import.meta.url)
+    const loaded = require('@deepseek-ai/schemastery') as
+      { default?: SchemaFactory } | SchemaFactory
+    Schema =
+      'default' in loaded && typeof loaded.default === 'function'
+        ? loaded.default
+        : (loaded as SchemaFactory)
   } catch (error) {
     ctx.logger.warn(
       `${PLUGIN_NAME}: @deepseek-ai/schemastery could not be resolved, so the ` +

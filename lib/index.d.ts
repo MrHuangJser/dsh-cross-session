@@ -93,10 +93,12 @@ type Config = Readonly<Record<string, unknown>>;
  *
  * @param ctx - the plugin context, which owns every registration this makes.
  * @param config - the composition row's own configuration, used as the base layer.
- * @returns a disposer that unregisters everything, or nothing when registration
- *   is owned by `ctx.effect`.
+ * @returns a disposer that unregisters the tools, or `undefined` when the
+ *   registration is already owned by `ctx.effect`. Synchronous by design: the
+ *   loader does not await a Promise from `apply`, so every registration must
+ *   happen in one call frame.
  */
-declare function apply(ctx: Context, config?: Config): Promise<Disposer | undefined>;
+declare function apply(ctx: Context, config?: Config): Disposer | undefined;
 /** Cordis plugin metadata consumed by the loader. */
 declare const name: "dsh-cross-session";
 /** Hard dependencies: without these the tools cannot do their job at all. */
