@@ -1,7 +1,7 @@
 {
   "name": "@mrhuangjser/dsh-cross-session",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "description": "Cross-session tools for the DeepSeek Harness: list, read, and message other sessions from inside one conversation.",
   "keywords": [
     "dsh",
@@ -12,7 +12,10 @@
     "multi-agent"
   ],
   "license": "MIT",
-  "author": "MrHuangJser",
+  "author": {
+    "name": "MrHuangJser",
+    "email": "mrhuangjser@gmail.com"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MrHuangJser/dsh-cross-session.git"
